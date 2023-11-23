@@ -3,22 +3,21 @@
 import os
 from models.base_model import BaseModel, Base
 from models.review import Review
-from models.amenity import Amenity
 from sqlalchemy import Column, String, Integer, Float, ForeignKey, Table
 from sqlalchemy.orm import relationship
 
 place_amenity = Table('place_amenity',
                       Base.metadata,
-                      Column('place_id', String(60), ForeignKey('place_id'), primary_key=True,
+                      Column('place_id', String(60), ForeignKey('places.id'), primary_key=True,
                               nullable=False),
-                      Column('amenity_id', String(60), ForeignKey('amenity_id'), nullable=False,
+                      Column('amenity_id', String(60), ForeignKey('amenities.id'), nullable=False,
                             primary_key=True)
 )
 
 class Place(BaseModel, Base):
     """ A place to stay """
+    __tablename__ = 'places'
     if os.getenv('HBNB_TYPE_STORAGE') == 'db':
-        __tablename__ = 'places'
         city_id = Column(String(60), ForeignKey('cities.id'), nullable=False)
         user_id = Column(String(60), ForeignKey('users.id'), nullable=False)
         name = Column(String(128), nullable=False)
@@ -57,6 +56,7 @@ class Place(BaseModel, Base):
         def amenities(self):
             """ gets list of amenites """
             from models import storage
+            from models.amenity import Amenity
             amenity_list = []
             for amenity in storage.all(Amenity).values():
                 if amenity.id in self.amenity_ids:
@@ -66,6 +66,7 @@ class Place(BaseModel, Base):
         @amenities.setter
         def amenities(self, obj):
             """ sets ammenities ids to the ammenity_ids attribute """
+            from models.amenity import Amenity
             if isinstance(obj, Amenity):
                 self.amenity_ids.append(obj.id)
 

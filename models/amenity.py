@@ -9,8 +9,8 @@ from sqlalchemy.orm import relationship
 
 class Amenity(BaseModel, Base):
     """ class for amenities objects """
+    __tablename__ = 'amenities'
     if os.getenv('HBNB_ENV') == 'db':
-        __tablename__ = 'amenities'
         name = Column(String(128), nullable=False)
         place_amenities = relationship('Amenity', secondary=place_amenity, viewonly=False)
     else:
