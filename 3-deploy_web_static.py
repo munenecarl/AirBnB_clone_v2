@@ -5,7 +5,7 @@ from fabric.api import env, put, run, local
 from os.path import exists, isdir
 from datetime import datetime
 
-env.hosts = ['xx-web-01', 'xx-web-02']
+env.hosts = ['localhost']
 
 def do_pack():
     """Generates a .tgz archive from the contents of the web_static folder."""
@@ -14,6 +14,7 @@ def do_pack():
 
     if not isdir("versions"):
         local("mkdir versions")
+    local("echo '<h1>My Index Page</h1>' > web_static/my_index.html")
     result = local("tar -cvzf {} web_static".format(file_name))
 
     if result.failed:
