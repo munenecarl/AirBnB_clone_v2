@@ -40,7 +40,8 @@ class DBStorage:
     def all(self, cls=None):
         """Query all objects of a class, or all objects if no class is given"""
         if cls:
-            cls = classes[cls]  # Get the class from the classes dictionary
+            if isinstance(cls, str):
+                cls = classes[cls]  # Get the class from the classes dictionary
             objs = self.__sessions.query(cls).all()
         else:
             objs = []
@@ -67,3 +68,7 @@ class DBStorage:
         session_factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
         Session = scoped_session(session_factory)
         self.__sessions = Session()
+
+    def close(self):
+        """Close the current database session"""
+        self.__sessions.close()

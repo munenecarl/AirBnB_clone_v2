@@ -71,4 +71,8 @@ class FileStorage:
     def save_delete(self):
         """ serializes __objects to the JSON file then dumps them """
         with open(FileStorage.__file_path, 'w') as f:
-            json.dump({k: v.to_dict() for k, v in self.__objects.items()}, f)       
+            json.dump({k: v.to_dict() for k, v in self.__objects.items()}, f)
+
+    def close(self):
+        """Deserializes the JSON file to objects"""
+        self.reload()    
