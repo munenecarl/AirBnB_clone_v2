@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 """Displays state info"""
 from flask import Flask, render_template
 from models import storage

@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 """Starts a minimal web app"""
 
 from flask import Flask, render_template
